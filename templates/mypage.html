@@ -79,20 +79,22 @@
         <script src="js/withdraw.js"></script>
     </div>
 
-    <h2>출금</h2>
-    <form method="POST" action="/convert_money">
-        <label>출금할 시드머니</label>
-        <input type="number" name="amount" min="1" step="0.01" required><br>
-        <input type="submit" value="시드머니 출금">
-    </form>
-
-    <h2>입금</h2>
-    <form method="POST" action="/charge_money">
-        <label>충전할 시드머니</label>
-        <input type="number" name="seed_money" min="0" step="1" required><br>
-        <input type="submit" value="시드머니 충전">
-    </form>
-
+    <div>
+        <h2>출금</h2>
+        <form method="POST" action="/convert_money">
+            <label>출금할 시드머니</label>
+            <input type="number" name="amount" min="1" step="0.01" required><br>
+            <input type="submit" value="시드머니 출금">
+        </form>
+    </div>
+    <div>
+        <h2>입금</h2>
+        <form method="POST" action="/charge_money">
+            <label>충전할 시드머니</label>
+            <input type="number" name="seed_money" min="0" step="1" required><br>
+            <input type="submit" value="시드머니 충전">
+        </form>
+    </div>
     <div>
         <h2>주문 이력</h2>
         {% if coin_data %}
