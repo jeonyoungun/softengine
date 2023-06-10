@@ -48,8 +48,6 @@ def home():
 
     coin_inventory = marketplace.get("coin_inventory", 0)
     coin_firstprice = marketplace.get("coin_firstprice", 0)
-    coin_data = coincol.find({"quantity": {"$gt": 0}})
-    coin_data = list(coin_data)
     if "username" in session:
         marketplace = marketcol.find_one({})
     coin_inventory = marketplace.get("coin_inventory", 0)
@@ -89,7 +87,7 @@ def home():
                 user=user,
                 coin_inventory=coin_inventory,
                 coin_price=coin_firstprice,
-                coin_data=coin_data,
+                coin_data=data_list,
                 graph_data=img_base64,
             )
         else:
@@ -230,22 +228,21 @@ def mypage():
     if "username" in session:
         username = session["username"]
         user = usercol.find_one({"username": username})
-        coin_list = coincol.find({"who": username})
-
-        if user :
+        coin_data = coincol.find({"who": username})
+        coin_data = list(coin_data)
+        if user:
             name = user["name"]
             coins = user["coins"]
             seed_money = user["seed_money"]
-            if not coin_list :
-                coin_list = 0
+            if not coin_data:
+                coin_data = 0
             return render_template(
                 "mypage.html",
                 name=name,
                 coins=coins,
                 seed_money=seed_money,
                 user=user,
-                coin_list = coin_list,
-                
+                coin_data=coin_data,
             )
         else:
             return "User not found"

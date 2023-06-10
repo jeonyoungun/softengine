@@ -89,13 +89,15 @@
     </div>
 
     <div class="module">
+        {%if coin_data %}
+        {% for data in coin_data %}
         <table>
             <tr>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Who</th>
             </tr>
-            {% for data in coin_data %}
+
             <tr>
                 <td>{{ data.quantity }}</td>
                 <td>{{ data.price }}</td>
@@ -110,8 +112,12 @@
 
                 </td>
             </tr>
-            {% endfor %}
+
         </table>
+        {% endfor %}
+        {%else%}
+        <p> There's no Trading Order</p>
+        {%endif%}
 
     </div>
     <img src="data:image/png;base64,{{ graph_data }}" alt="Graph">
