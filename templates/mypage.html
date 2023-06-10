@@ -76,6 +76,35 @@
         <input type="number" name="seed_money" min="0" step="1" required><br>
         <input type="submit" value="시드머니 충전">
     </form>
+    <div>
+        <h2>주문 이력</h2>
+        <table>
+            <tr>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Who</th>
+                <th>Time</th>
+            </tr>
+            {% for data in coin_data %}
+            <tr>
+                <td>{{ data.quantity }}</td>
+                <td>{{ data.price }}</td>
+                <td>{{ data.who }}</td>
+                <td>
+                    <form method="POST" action="/buy_user_coin">
+                        <input type="hidden" name="seller_username" value="{{ data.who }}">
+                        <input type="hidden" name="coin_quantity" value="{{ data.quantity }}">
+                        <input type="hidden" name="coin_price" value="{{ data.price }}">
+                        <input type="submit" value="구매">
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
 
 
     <hr>
