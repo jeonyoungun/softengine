@@ -3,91 +3,31 @@
 
 <head>
     <title>마이 페이지</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-
-        p {
-            margin-bottom: 10px;
-        }
-
-        form {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        input[type="number"],
-        input[type="submit"] {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid #ccc;
-            margin: 20px 0;
-        }
-
-        a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        .table-style {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        .table-style th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .table-style td {
-            columns: black;
-
-            padding: 8px;
-        }
-    </style>
-    <!-- <script src="./js/withdraw.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 
 <body>
-    <hr>
-    <p>{{ user.name }}님, 환영합니다!</p>
     <h1>마이 페이지</h1>
-    <p>계좌 잔액: {{ seed_money }}원</p>
-    <p>구매한 코인 개수: {{ coins }}</p>
-    <div class="module" id="moduleContainer">
-        <script src="js/withdraw.js"></script>
+    <div class="nav-style">
+        <a href="/logout">로그아웃</a>
+        <a href="/home">메인으로</a>
+    </div>
+    <div class="module">
+        <hr>
+        <p>{{ user.name }}님, 환영합니다!</p>
+        <p>계좌 잔액: {{ seed_money }}원</p>
+        <p>구매한 코인 개수: {{ coins }}</p>
     </div>
 
-    <div>
+    <div class="module">
         <h2>출금</h2>
-        <form method="POST" action="/convert_money">
+        <form method="POST" action="/withdraw">
             <label>출금할 시드머니</label>
             <input type="number" name="amount" min="1" step="0.01" required><br>
             <input type="submit" value="시드머니 출금">
         </form>
     </div>
-    <div>
+    <div class="module">
         <h2>입금</h2>
         <form method="POST" action="/charge_money">
             <label>충전할 시드머니</label>
@@ -95,7 +35,7 @@
             <input type="submit" value="시드머니 충전">
         </form>
     </div>
-    <div>
+    <div class="module">
         <h2>주문 이력</h2>
         {% if coin_data %}
 
@@ -112,10 +52,11 @@
                 <td>{{ data.quantity }}</td>
                 <td>{{ data.price }}</td>
                 <td>{{ data.who }}</td>
-                <td>{{data.date}}</td>
+                <td>{{data.sold_time}}</td>
             </tr>
+            {% endfor %}
         </table>
-        {% endfor %}
+
         {% else %}
         <p> There's no Trading History</p>
         {%endif%}
@@ -127,7 +68,6 @@
 
 
     <hr>
-    <a href="/logout">로그아웃</a>
 </body>
 
 </html>

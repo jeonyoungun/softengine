@@ -12,6 +12,9 @@ from pymongo import MongoClient
 from datetime import datetime
 from bson import ObjectId
 import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use("Agg")
 import io
 import base64
 
@@ -48,10 +51,24 @@ def home():
 
     coin_inventory = marketplace.get("coin_inventory", 0)
     coin_firstprice = marketplace.get("coin_firstprice", 0)
-    if "username" in session:
-        marketplace = marketcol.find_one({})
-    coin_inventory = marketplace.get("coin_inventory", 0)
-    coin_firstprice = marketplace.get("coin_firstprice", 0)
+
+    # sold_time과 price 데이터 추출
+    coin_sell_data = coincol.find({"quantity": {"$gt": 0}})
+    coin_sell_data_list = list(coin_sell_data)
+    sold_time_list = [data["sold_time"] for data in coin_sell_data_list]
+    price_list = [data["price"] for data in coin_sell_data_list]
+
+    # 그래프 생성
+    plt.plot(sold_time_list, price_list)
+    plt.xlabel("Sold Time")
+    plt.ylabel("Price")
+    plt.title("Coin Sell Data")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    img_stream = io.BytesIO()
+    plt.savefig(img_stream, format="png")
+    img_stream.seek(0)
+    img_base64 = base64.b64encode(img_stream.getvalue()).decode("utf-8")
     if "username" in session:
         username = session["username"]
         user = usercol.find_one({"username": username})
@@ -62,38 +79,35 @@ def home():
             market_data = marketcol.find({"quantity": {"$gt": 0}})
             data_list = list(market_data)
 
-            coin_sell_data = coincol.find({"quantity": {"$gt": 0}})
-            coin_sell_data_list = list(coin_sell_data)
-            # sold_time과 price 데이터 추출
-            sold_time_list = [data["sold_time"] for data in coin_sell_data_list]
-            price_list = [data["price"] for data in coin_sell_data_list]
-
-            # 그래프 생성
-            plt.plot(sold_time_list, price_list)
-            plt.xlabel("Sold Time")
-            plt.ylabel("Price")
-            plt.title("Coin Sell Data")
-            plt.xticks(rotation=45)
-            plt.tight_layout()
-            img_stream = io.BytesIO()
-            plt.savefig(img_stream, format="png")
-            img_stream.seek(0)
-            img_base64 = base64.b64encode(img_stream.getvalue()).decode("utf-8")
             return render_template(
                 "home.html",
+                isLoggedin=True,
                 name=name,
                 coins=coins,
                 seed_money=seed_money,
                 user=user,
                 coin_inventory=coin_inventory,
-                coin_price=coin_firstprice,
+                coin_firstprice=coin_firstprice,
                 coin_data=data_list,
                 graph_data=img_base64,
             )
         else:
-            return "User not found"
+            return redirect(url_for("login"))
     else:
-        return redirect(url_for("login"))
+        market_data = marketcol.find({"quantity": {"$gt": 0}})
+        data_list = list(market_data)
+
+        return render_template(
+            "home.html",
+            isLoggedin=False,
+            name="0",
+            coins=0,
+            seed_money=0,
+            coin_inventory=coin_inventory,
+            coin_firstprice=coin_firstprice,
+            coin_data=data_list,
+            graph_data=img_base64,
+        )
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -245,7 +259,7 @@ def mypage():
                 coin_data=coin_data,
             )
         else:
-            return "User not found"
+            return redirect(url_for("login"))
     else:
         return redirect(url_for("login"))
 
@@ -332,7 +346,7 @@ def sell_coin():
             {"quantity": coin_quantity, "price": coin_price, "who": username}
         )
 
-        return "Coin sold successfully"
+        return redirect(url_for("home"))
 
     return redirect(url_for("login"))
 

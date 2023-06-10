@@ -3,68 +3,14 @@
 
 <head>
     <title>로그인 페이지</title>
+
 </head>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coin Exchange - Login</title>
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
-    <style>
-        /* 스타일을 추가하여 디자인을 변경할 수 있습니다 */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="password"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .form-group button {
-            width: 100%;
-            padding: 8px;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .form-group button:hover {
-            background-color: #45a049;
-        }
-    </style>
-    <script src="../static/js/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 
 <body>
@@ -92,10 +38,6 @@
     <script>
         alert(messages);  // 알람 표시
     </script>
-    <!-- {% else %}
-    <script>
-        alert("중복된 아이디 입니다.");  // 알람 표시
-    </script> -->
     {% endif %}
     {% endwith %}
 
